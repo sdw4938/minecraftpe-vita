@@ -333,41 +333,38 @@ void handleController() {
 	if(changedButtons & SCE_CTRL_UP) {
 		Keyboard::feed(Keyboard::KEY_W, BTN_STATE(ctrl.buttons, SCE_CTRL_UP));
 	}
-	if(changedButtons & SCE_CTRL_DOWN) {
-		Keyboard::feed(Keyboard::KEY_S, BTN_STATE(ctrl.buttons, SCE_CTRL_DOWN));
-	}
+//	if(changedButtons & SCE_CTRL_DOWN) {
+//		Keyboard::feed(Keyboard::KEY_S, BTN_STATE(ctrl.buttons, SCE_CTRL_DOWN));
+//	}
 	if(changedButtons & SCE_CTRL_LEFT) {
 		Keyboard::feed(Keyboard::KEY_A, BTN_STATE(ctrl.buttons, SCE_CTRL_LEFT));
 	}
 	if(changedButtons & SCE_CTRL_RIGHT) {
 		Keyboard::feed(Keyboard::KEY_D, BTN_STATE(ctrl.buttons, SCE_CTRL_RIGHT));
 	}
-	if(changedButtons & SCE_CTRL_SQUARE) {
-		Keyboard::feed(Keyboard::KEY_E, BTN_STATE(ctrl.buttons, SCE_CTRL_SQUARE));
-	}
 
 	// sneak
-	if(changedButtons & SCE_CTRL_CIRCLE) {
-		Keyboard::feed(Keyboard::KEY_LSHIFT, BTN_STATE(ctrl.buttons, SCE_CTRL_CIRCLE));
+	if(changedButtons & SCE_CTRL_DOWN) {
+		Keyboard::feed(Keyboard::KEY_LSHIFT, BTN_STATE(ctrl.buttons, SCE_CTRL_DOWN));
 	}
+
 	// jump
 	if(changedButtons & SCE_CTRL_CROSS) {
 		Keyboard::feed(Keyboard::KEY_SPACE, BTN_STATE(ctrl.buttons, SCE_CTRL_CROSS));
 	}
 
 	// crafting menu
-	if(changedButtons & SCE_CTRL_SQUARE) {
+	if(changedButtons & SCE_CTRL_TRIANGLE) {
 		Keyboard::feed(Keyboard::KEY_Q, BTN_STATE(ctrl.buttons, SCE_CTRL_SQUARE));
 	}
 	// drop item
 	if(changedButtons & SCE_CTRL_CIRCLE) {
 		Keyboard::feed(Keyboard::KEY_K, BTN_STATE(ctrl.buttons, SCE_CTRL_CIRCLE));
 	}
-	// inventory item
-	if(changedButtons & SCE_CTRL_TRIANGLE) {
+	// inventory
+	if(changedButtons & SCE_CTRL_SQUARE) {
 		Keyboard::feed(Keyboard::KEY_E, BTN_STATE(ctrl.buttons, SCE_CTRL_TRIANGLE));
 	}
-
 	// pause
 	if(changedButtons & SCE_CTRL_START) {
 		Keyboard::feed(Keyboard::KEY_ESCAPE, BTN_STATE(ctrl.buttons, SCE_CTRL_START));

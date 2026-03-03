@@ -722,7 +722,7 @@ void Minecraft::tickInput() {
 			// PATCH:
 			// make controls nicer - Li
 
-			#if defined(_VITA) || defined(_WIN32)
+			#if defined(__VITA__) || defined(_WIN32)
 			if (key == Keyboard::KEY_E) {
 				// open inventory
 				screenChooser.setScreen(SCREEN_BLOCKSELECTION);
