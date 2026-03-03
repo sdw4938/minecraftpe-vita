@@ -6,19 +6,19 @@
 #include "KeyboardInput.h"
 #include "ITurnInput.h"
 #include "touchscreen/TouchInputHolder.h"
+#include "MouseBuildInput.h"
 #include "../../../platform/input/Controller.h"
 
 static const int moveStick = 1;
 static const int lookStick = 2;
 
 class VitaTurnBuild : public UnifiedTurnBuild {
-	typedef UnifiedTurnBuild super;
 public:
 	VitaTurnBuild(int turnMode, int width, int height, float maxMovementDelta, float sensitivity, IInputHolder* holder, Minecraft* minecraft) :
-		super(turnMode, width, height, maxMovementDelta, sensitivity, holder, minecraft) {}
+		UnifiedTurnBuild(turnMode, width, height, maxMovementDelta, sensitivity, holder, minecraft) {}
 
 	TurnDelta getTurnDelta() override {
-		TurnDelta td = super::getTurnDelta();
+		TurnDelta td = UnifiedTurnBuild::getTurnDelta();
 
 		float stickX = Controller::getTransformedX(lookStick, 0.1f, 1.25f, true);
 		float stickY = Controller::getTransformedY(lookStick, 0.1f, 1.25f, true);
@@ -33,8 +33,30 @@ public:
 		td.y += dy;
 		return td;
 	}
+
+	bool tickBuild(Player* p, BuildActionIntention* bai) override {
+		if (Mouse::getButtonState(MouseAction::ACTION_LEFT) != 0) {
+			*bai = BuildActionIntention(BuildActionIntention::BAI_REMOVE | BuildActionIntention::BAI_ATTACK);
+			return true;
+		}
+		if (Mouse::getButtonState(MouseAction::ACTION_RIGHT) != 0) {
+			if (buildHoldTicks >= buildDelayTicks) buildHoldTicks = 0;
+			if (++buildHoldTicks == 1) {
+				*bai = BuildActionIntention(BuildActionIntention::BAI_BUILD | BuildActionIntention::BAI_INTERACT);
+				return true;
+			}
+		} else {
+			buildHoldTicks = 0;
+		}
+		return UnifiedTurnBuild::tickBuild(p, bai);
+	}
+
+	void onConfigChanged(const Config& c) override {
+		UnifiedTurnBuild::onConfigChanged(c);
+	}
 private:
-	float cxO, cyO;
+	int buildHoldTicks;
+	int buildDelayTicks;
 };
 
 class VitaMoveInput : public KeyboardInput {

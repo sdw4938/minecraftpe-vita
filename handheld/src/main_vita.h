@@ -320,6 +320,7 @@ void handleController() {
 	sceCtrlReadBufferPositive(0, &ctrl, 1);
 
 	//sceClibPrintf("ctrl.rx = %d ctrl.ry = %d\n", ctrl.rx, ctrl.ry);
+	trackpadPress(1, ctrl.lx, ctrl.ly);
     trackpadPress(2, ctrl.rx, ctrl.ry);
 
 	uint32_t changedButtons = ctrl.buttons ^ prevCtrl.buttons;
