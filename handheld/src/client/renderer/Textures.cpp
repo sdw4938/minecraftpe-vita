@@ -8,7 +8,9 @@
 
 /*static*/ int  Textures::textureChanges = 0;
 /*static*/ bool Textures::MIPMAP = false;
+#ifndef _WIN32
 const TextureId Textures::InvalidId;
+#endif
 
 #define glCheck(f) do { int err = glGetError(); if(err != 0) { printf("GL Error: " #f ": %d\n", err); fflush(0); exit(1); } } while(0)
 
