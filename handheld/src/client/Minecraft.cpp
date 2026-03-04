@@ -732,9 +732,10 @@ void Minecraft::tickInput() {
 						// pause the game
 						pauseGame(false);
 					}
+
+					// drop currently selected inventory slot.
 					if(key == Keyboard::KEY_Q) {
-						// drop currently selected inventory slot.
-						if (player->inventory->getItem(player->inventory->selected)) {
+						if (!isCreativeMode() && player->inventory->getItem(player->inventory->selected) != nullptr) {
 							player->inventory->dropSlot(player->inventory->selected, false);
 						}
 					}
