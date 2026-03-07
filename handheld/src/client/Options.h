@@ -10,6 +10,7 @@
 #include "KeyMapping.h"
 #include "../platform/input/Keyboard.h"
 #include "../util/StringUtils.h"
+#include "../world/Difficulty.h"
 #include "OptionsFile.h"
 
 class Minecraft;
@@ -221,7 +222,7 @@ public:
 			//minecraft->textures.reloadAll();
 		}
 		if (option == &Option::LIMIT_FRAMERATE) {}
-		if (option == &Option::DIFFICULTY) difficulty = (difficulty + dir) & 3;
+		if (option == &Option::DIFFICULTY) (difficulty == Difficulty::NORMAL) ? difficulty = Difficulty::PEACEFUL : difficulty = Difficulty::NORMAL;
 		if (option == &Option::GRAPHICS) {
 			fancyGraphics = !fancyGraphics;
 			//minecraft->levelRenderer.allChanged();
