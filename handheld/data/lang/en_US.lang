@@ -127,6 +127,7 @@ disconnect.quitting=Quitting
 disconnect.endOfStream=End of stream
 disconnect.overflow=Buffer overflow
 
+
 options.off=OFF
 options.on=ON
 options.title=Options
@@ -156,6 +157,8 @@ options.viewBobbing=View Bobbing
 options.ao=Smooth Lighting
 options.anaglyph=3D Anaglyph
 options.framerateLimit=Performance
+options.limitFramerate=Limit Framerate
+options.highPerformance=High Performance
 options.difficulty=Difficulty
 options.difficulty.peaceful=Peaceful
 options.difficulty.easy=Easy
@@ -178,6 +181,19 @@ options.particles=Particles
 options.particles.all=All
 options.particles.decreased=Decreased
 options.particles.minimal=Minimal
+options.thirdperson=Third Person
+options.hidegui=Hide GUI
+options.servervisible=Server Visible
+options.lefthanded=Left Handed
+options.usetouchscreen=Use Touchscreen
+options.usetouchpad=Use Touchpad
+options.destroyvibration=Vibration Feedback
+options.renderDebug=Debug Rendering
+
+options.group.video=Video Settings
+options.group.game=Game Settings
+options.group.control=Control Settings
+options.group.audio=Audio Settings
 
 performance.max=Max FPS
 performance.balanced=Balanced
