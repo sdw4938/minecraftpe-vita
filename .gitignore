@@ -1,4 +1,5 @@
 /build
+/build_demo
 handheld/project/win32_gl/Release/*
 handheld/project/win32_gl/Debug/*
 handheld/project/win32/Release/*
@@ -7,5 +8,6 @@ handheld/project/win32/Debug/*
 *.sdf
 *.suo
 *.opensdf
+
 
 *.kate-swp

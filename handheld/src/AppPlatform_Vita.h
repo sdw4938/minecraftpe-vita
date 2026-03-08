@@ -7,6 +7,7 @@
 #include "AppPlatform.h"
 #include <psp2/io/fcntl.h>
 #include <psp2/io/stat.h>
+#include <psp2/appmgr.h>
 
 #include "NinecraftApp.h"
 
@@ -27,6 +28,20 @@ public:
 
 	int getScreenWidth() override { return width; }
 	int getScreenHeight() override { return height; }
+
+	void buyGame() {
+
+		// TODO: check np region
+		std::string region = "eu";
+
+		if (region == "jp") {
+			sceAppMgrLaunchAppByUri(0x20000, "psts:browse?product=JP0127-PCSG00302_00-MINECRAFTVIT0000");
+		} else if (region == "us") {
+			sceAppMgrLaunchAppByUri(0x20000, "psts:browse?product=UP4433-PCSE00491_00-MINECRAFTVIT0000");
+		} else {
+			sceAppMgrLaunchAppByUri(0x20000, "psts:browse?product=EP4433-PCSB00560_00-MINECRAFTVIT0000");
+		}
+	}
 
 	bool isPowerVR() override { return true; }
 

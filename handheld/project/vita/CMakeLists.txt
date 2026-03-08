@@ -452,7 +452,7 @@ target_link_libraries(minecraftcpp PUBLIC
   SceAudio_stub
   SceNgsUser_stub
   SceNet_stub
-  SceAppUtil_stub
+  SceAppMgr_stub
   SceNetCtl_stub
   SceNpManager_stub
 

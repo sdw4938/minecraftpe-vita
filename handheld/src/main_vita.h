@@ -334,15 +334,8 @@ int main(int argc, char** argv) {
 	checkSce(sceNetInit(&netInit));
 	checkSce(sceNetCtlInit());
 
-	SceAppUtilInitParam initParam = {0};
-	SceAppUtilBootParam bootParam = {0};
-
-	checkSce(sceAppUtilInit(&initParam, &bootParam));
-
 	SceNpCommunicationConfig cfg = {0};
 	checkSce(sceNpInit(&cfg, nullptr));
-
-	// checkSce(sceAppUtilCacheMount());
 
 	MAIN_CLASS* app = new MAIN_CLASS();
 	// savedata0 is too slow .. (probably bcs pfs)
@@ -377,7 +370,6 @@ int main(int argc, char** argv) {
 	deinitEgl(&context);
 
 	sceNpTerm();
-	sceAppUtilShutdown();
 
 	return 0;
 }
