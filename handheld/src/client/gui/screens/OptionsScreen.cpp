@@ -208,6 +208,7 @@ void OptionsScreen::mouseReleased( int x, int y, int buttonNum ) {
 }
 
 void OptionsScreen::tick() {
+#ifndef __VITA__
 	if (isEditingUsername) {
 		int status = minecraft->platform()->getUserInputStatus();
 		if (status > -1) {
@@ -223,7 +224,9 @@ void OptionsScreen::tick() {
 			}
 			isEditingUsername = false;
 		}
-	} else {
+	} else
+#endif
+	{
 		if(optionPane != NULL)
 			optionPane->tick(minecraft);
 		super::tick();

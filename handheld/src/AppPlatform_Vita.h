@@ -8,6 +8,9 @@
 #include <psp2/io/fcntl.h>
 #include <psp2/io/stat.h>
 #include <psp2/appmgr.h>
+#include <psp2/libime.h>
+
+#include <cstdlib>
 
 #include "NinecraftApp.h"
 
@@ -20,6 +23,51 @@ static void png_funcReadFile(png_structp pngPtr, png_bytep data, png_size_t leng
 	((std::istream*)png_get_io_ptr(pngPtr))->read((char*)data, length);
 }
 
+static SceWChar16 ime_out[SCE_IME_MAX_PREEDIT_LENGTH + SCE_IME_MAX_TEXT_LENGTH + 1] = {0};
+static SceUInt8 ime_out_utf8[sizeof(ime_out)] = {0};
+static char ime_inital[8] = { 0 };
+
+static void Utf16ToUtf8(const uint16_t *src, uint8_t *dst)
+{
+	int i;
+	for (i = 0; src[i]; i++) {
+		if (!(src[i] & 0xFF80)) {
+			*(dst++) = src[i] & 0xFF;
+		} else if (!(src[i] & 0xF800)) {
+			*(dst++) = ((src[i] >> 6) & 0xFF) | 0xC0;
+			*(dst++) = (src[i] & 0x3F) | 0x80;
+		} else if ((src[i] & 0xFC00) == 0xD800 && (src[i + 1] & 0xFC00) == 0xDC00) {
+			*(dst++) = (((src[i] + 64) >> 8) & 0x3) | 0xF0;
+			*(dst++) = (((src[i] >> 2) + 16) & 0x3F) | 0x80;
+			*(dst++) = ((src[i] >> 4) & 0x30) | 0x80 | ((src[i + 1] << 2) & 0xF);
+			*(dst++) = (src[i + 1] & 0x3F) | 0x80;
+			i += 1;
+		} else {
+			*(dst++) = ((src[i] >> 12) & 0xF) | 0xE0;
+			*(dst++) = ((src[i] >> 6) & 0x3F) | 0x80;
+			*(dst++) = (src[i] & 0x3F) | 0x80;
+		}
+	}
+
+	*dst = '\0';
+}
+
+static void ImeEventHandler(void *arg, const SceImeEventData *e)
+{
+
+	switch (e->id) {
+		case SCE_IME_EVENT_UPDATE_TEXT:
+			Utf16ToUtf8((SceWChar16 *)ime_out, (uint8_t*)ime_out_utf8);
+			LOGI("text_so_far: %s\n", ime_out_utf8);
+		break;
+		case SCE_IME_EVENT_PRESS_ENTER:
+			sceImeClose();
+			break;
+		case SCE_IME_EVENT_PRESS_CLOSE:
+			sceImeClose();
+			break;
+	}
+}
 
 class AppPlatform_Vita : public AppPlatform
 {
@@ -29,18 +77,59 @@ public:
 	int getScreenWidth() override { return width; }
 	int getScreenHeight() override { return height; }
 
-	void buyGame() {
+	void buyGame() override {
 
 		// TODO: check np region
 		std::string region = "eu";
 
 		if (region == "jp") {
-			sceAppMgrLaunchAppByUri(0x20000, "psts:browse?product=JP0127-PCSG00302_00-MINECRAFTVIT0000");
+			sceAppMgrLaunchAppByUri(0x60000, "psts:browse?product=JP0127-PCSG00302_00-MINECRAFTVIT0000");
 		} else if (region == "us") {
-			sceAppMgrLaunchAppByUri(0x20000, "psts:browse?product=UP4433-PCSE00491_00-MINECRAFTVIT0000");
+			sceAppMgrLaunchAppByUri(0x60000, "psts:browse?product=UP4433-PCSE00491_00-MINECRAFTVIT0000");
 		} else {
-			sceAppMgrLaunchAppByUri(0x20000, "psts:browse?product=EP4433-PCSB00560_00-MINECRAFTVIT0000");
+			sceAppMgrLaunchAppByUri(0x60000, "psts:browse?product=EP4433-PCSB00560_00-MINECRAFTVIT0000");
 		}
+	}
+
+	StringVector getUserInput() override {
+		LOGI("getUserInput\n");
+		StringVector vec;
+		int ret;
+
+		SceUInt32 ime_workram[SCE_IME_WORK_BUFFER_SIZE / sizeof(SceInt32)] = {0};
+
+		SceImeParam param;
+		LOGI("sceParamInit\n");
+		sceImeParamInit(&param);
+
+		param.supportedLanguages = SCE_IME_LANGUAGE_ENGLISH_GB;
+		param.languagesForced = SCE_FALSE;
+		param.type = SCE_IME_TYPE_BASIC_LATIN;
+		param.option = 0;
+
+		param.inputTextBuffer = ime_out;
+		param.maxTextLength = SCE_IME_MAX_TEXT_LENGTH;
+		param.enterLabel = SCE_IME_ENTER_LABEL_DEFAULT;
+		param.handler = ImeEventHandler;
+		param.filter = NULL;
+		param.initialText = (SceWChar16 *)ime_inital;
+		param.arg = NULL;
+		param.work = ime_workram;
+
+		LOGI("sceImeOpen\n");
+		checkSce(sceImeOpen(&param));
+
+		while(!sceImeUpdate()) {}
+
+		Utf16ToUtf8(ime_out, ime_out_utf8);
+
+		std::string imetxt = std::string((char*)ime_out_utf8);
+		LOGI("imetxt: %s\n", imetxt.c_str());
+
+		vec.push_back(imetxt);
+
+		return vec;
+
 	}
 
 	bool isPowerVR() override { return true; }
