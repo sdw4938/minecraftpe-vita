@@ -27,6 +27,9 @@ set(HANDHELD "${CMAKE_CURRENT_LIST_DIR}/../../src/")
 set(ASSETS_DIR "${CMAKE_CURRENT_LIST_DIR}/../../data")
 
 set(VITA_ICON0 ${CMAKE_CURRENT_LIST_DIR}/sce_sys/icon0.png)
+set(VITA_PIC0 ${CMAKE_CURRENT_LIST_DIR}/sce_sys/pic0.png)
+set(VITA_BG ${CMAKE_CURRENT_LIST_DIR}/sce_sys/livearea/contents/bg.png)
+set(VITA_GATE ${CMAKE_CURRENT_LIST_DIR}/sce_sys/livearea/contents/gate.png)
 
 add_definitions(-D__VITA__)
 
@@ -34,6 +37,8 @@ if(DEMO)
 set(VITA_APP_NAME "Minecraft PE Demo")
 set(VITA_TITLEID  "MCPEDEMO0")
 set(VITA_ICON0 ${CMAKE_CURRENT_LIST_DIR}/sce_sys/icon0_demo.png)
+set(VITA_BG ${CMAKE_CURRENT_LIST_DIR}/sce_sys/livearea/contents/bg_demo.png)
+set(VITA_GATE ${CMAKE_CURRENT_LIST_DIR}/sce_sys/livearea/contents/gate_demo.png)
 add_definitions(-DDEMO_MODE)
 endif()
 
@@ -42,10 +47,6 @@ add_compile_options(-O3 -ffast-math -fomit-frame-pointer)
 if(PUBLISH)
 add_definitions(-DPUBLISH)
 endif()
-#if(RELEASE)
-#add_definitions(-DRELEASE)
-#add_compile_options(-O3 -g0 -frtti -ffast-math -funroll-loops -fomit-frame-pointer)
-#endif()
 
 
 add_library(raknet
@@ -500,8 +501,8 @@ vita_create_vpk(minecraftcpp.vpk ${VITA_TITLEID} minecraftcpp.self
   FILE ${CMAKE_CURRENT_LIST_DIR}/module/libc.suprx                             sce_module/libc.suprx
   FILE ${CMAKE_CURRENT_LIST_DIR}/module/libfios2.suprx                         sce_module/libfios2.suprx
   FILE ${VITA_ICON0}                                                           sce_sys/icon0.png
-  FILE ${CMAKE_CURRENT_LIST_DIR}/sce_sys/pic0.png                              sce_sys/pic0.png
-  FILE ${CMAKE_CURRENT_LIST_DIR}/sce_sys/livearea/contents/bg.png              sce_sys/livearea/contents/bg.png
-  FILE ${CMAKE_CURRENT_LIST_DIR}/sce_sys/livearea/contents/gate.png            sce_sys/livearea/contents/gate.png
+  FILE ${VITA_PIC0}                                                            sce_sys/pic0.png
+  FILE ${VITA_BG}                                                              sce_sys/livearea/contents/bg.png
+  FILE ${VITA_GATE}                                                            sce_sys/livearea/contents/gate.png
   FILE ${CMAKE_CURRENT_LIST_DIR}/sce_sys/livearea/contents/template.xml        sce_sys/livearea/contents/template.xml
 )
