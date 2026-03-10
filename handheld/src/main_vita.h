@@ -46,7 +46,7 @@ static void initPvrPSP2() {
 	checkSce(sceKernelLoadStartModule("app0:sce_module/libfios2.suprx", 0, NULL, 0, NULL, NULL));
 	checkSce(sceKernelLoadStartModule("app0:sce_module/libc.suprx", 0, NULL, 0, NULL, NULL));
 	checkSce(sceKernelLoadStartModule(libgpu_es4_ext, 0, NULL, 0, NULL, NULL));
-  	checkSce(sceKernelLoadStartModule(libIMGEGL, 0, NULL, 0, NULL, NULL));
+	checkSce(sceKernelLoadStartModule(libIMGEGL, 0, NULL, 0, NULL, NULL));
 	
 	PVRSRV_PSP2_APPHINT hint;
   	PVRSRVInitializeAppHint(&hint);
@@ -322,10 +322,10 @@ void handleController() {
 
 int main(int argc, char** argv) {
 	int ret;
-	sceSysmoduleLoadModule(SCE_SYSMODULE_NET);
-	sceSysmoduleLoadModule(SCE_SYSMODULE_APPUTIL);
-	sceSysmoduleLoadModule(SCE_SYSMODULE_NP);
-	sceSysmoduleLoadModule(SCE_SYSMODULE_IME);
+
+	checkSce(sceSysmoduleLoadModule(SCE_SYSMODULE_NET));
+	checkSce(sceSysmoduleLoadModule(SCE_SYSMODULE_IME));
+	checkSce(sceSysmoduleLoadModule(SCE_SYSMODULE_NP));
 
 	static char netMem[0x10000];
 	SceNetInitParam netInit = {
@@ -340,6 +340,7 @@ int main(int argc, char** argv) {
 	checkSce(sceNpInit(&cfg, nullptr));
 
 	MAIN_CLASS* app = new MAIN_CLASS();
+
 	// savedata0 is too slow .. (probably bcs pfs)
 	app->externalStoragePath = "ux0:/data/minecraftpe";
 	app->externalCacheStoragePath = "ux0:/data/minecraftpe";
@@ -359,8 +360,8 @@ int main(int argc, char** argv) {
 
 	initEgl(app, &context, width, height);
 
-	sceTouchSetSamplingState(0, SCE_TOUCH_SAMPLING_STATE_START);
-	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
+	checkSce(sceTouchSetSamplingState(0, SCE_TOUCH_SAMPLING_STATE_START));
+	checkSce(sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG));
 
 	bool running = true;
 	while (running) {
@@ -372,7 +373,13 @@ int main(int argc, char** argv) {
 
 	deinitEgl(&context);
 
+	sceNetTerm();
+	sceNetCtlTerm();
 	sceNpTerm();
+	checkSce(sceSysmoduleUnloadModule(SCE_SYSMODULE_NET));
+	checkSce(sceSysmoduleUnloadModule(SCE_SYSMODULE_IME));
+	checkSce(sceSysmoduleUnloadModule(SCE_SYSMODULE_NP));
+
 
 	return 0;
 }

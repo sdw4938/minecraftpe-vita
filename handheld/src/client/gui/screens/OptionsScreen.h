@@ -34,8 +34,9 @@ private:
 	Button* btnNextPage;
 	Button* btnPrevPage;
 	OptionsPane* optionPane;
-	bool isEditingUsername;
-	Button* btnUsername;
+#ifdef EDIT_USERNAME
+	TextBox* editUsername;
+#endif
 	int currentPage;
 	int maxPages;
 };

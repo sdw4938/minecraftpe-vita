@@ -456,6 +456,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
   SceAppMgr_stub
   SceNetCtl_stub
   SceNpManager_stub
+  SceRegistryMgr_stub
   SceIme_stub
 
   raknet

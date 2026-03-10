@@ -4,8 +4,10 @@
 #include "OptionsItem.h"
 #include "Slider.h"
 #include "Button.h"
+#include "TextBox.h"
 #include "../../../locale/I18n.h"
 #include "../../sound/SoundEngine.h"
+
 OptionsGroup::OptionsGroup( std::string labelID )  {
 	label = I18n::get(labelID);
 }
@@ -115,13 +117,10 @@ void OptionsGroup::createStepSlider( const Options::Option* option, Minecraft* m
 	setupPositions();
 }
 
-OptionsGroup& OptionsGroup::addOptionTextEntry( std::string text, int id, Minecraft* minecraft, Button** outButton ) {
-	Button* element;
-	if (minecraft->useTouchscreen()) {
-		element = new Touch::TButton(id, text);
-	} else {
-		element = new Button(id, text);
-	}
+OptionsGroup& OptionsGroup::addOptionTextEntry( std::string text, int id, Minecraft* minecraft, TextBox** outButton ) {
+	TextBox* element;
+	element = new TextBox(id, text);
+
 	element->width = 160;
 	element->height = 30;
 	OptionsItem* item = new OptionsItem("", element);

@@ -9,14 +9,19 @@
 #include "../components/OptionsPane.h"
 #include "../components/ImageButton.h"
 #include "../components/OptionsGroup.h"
+#include "../components/TextBox.h"
+
+
 OptionsScreen::OptionsScreen()
 : btnClose(NULL),
   bHeader(NULL),
   btnNextPage(NULL),
   btnPrevPage(NULL),
-  optionPane(NULL) {
-  	isEditingUsername = false;
-  	btnUsername = NULL;
+  optionPane(NULL)
+#ifdef EDIT_USERNAME
+  editUsername(NULL)
+#endif
+{
 	currentPage = 0;
 	maxPages = 3;
 }
@@ -42,6 +47,13 @@ OptionsScreen::~OptionsScreen() {
 		delete optionPane;
 		optionPane = NULL;
 	}
+#ifdef EDIT_USERNAME
+	if(editUsername != NULL) {
+		delete editUsername;
+		editUsername = NULL;
+	}
+#endif
+
 }
 
 void OptionsScreen::init() {
@@ -96,7 +108,7 @@ void OptionsScreen::setupPositions() {
 		optionPane->width = paneWidth;
 		optionPane->x = (width - paneWidth) / 2; 
 		optionPane->y = bHeader->height;
-        optionPane->height = height - bHeader->height - btnPrevPage->height - 15;
+		optionPane->height = height - bHeader->height - btnPrevPage->height - 15;
 		optionPane->setupPositions();
 	}
 }
@@ -116,6 +128,8 @@ void OptionsScreen::removed()
 
 void OptionsScreen::buttonClicked( Button* button ) {
 	if(button == btnClose) {
+		minecraft->options.save();
+
 		minecraft->reloadOptions();
 		minecraft->screenChooser.setScreen(SCREEN_STARTMENU);
 	} else if (button == btnPrevPage) {
@@ -124,7 +138,6 @@ void OptionsScreen::buttonClicked( Button* button ) {
 		} else {
 			currentPage = maxPages - 1;
 		}
-		btnUsername = NULL;
 		generateOptionScreens();
 	} else if (button == btnNextPage) {
 		if (currentPage < maxPages - 1) {
@@ -132,15 +145,6 @@ void OptionsScreen::buttonClicked( Button* button ) {
 		} else {
 			currentPage = 0;
 		}
-		btnUsername = NULL;
-		generateOptionScreens();
-	} else if (button->id == 100) {
-#ifndef __VITA__
-		minecraft->platform()->createUserInput(DialogDefinitions::DIALOG_ENTER_USERNAME);
-#endif
-		isEditingUsername = true;
-	} else if (button->id == 101) {
-		minecraft->options.save();
 		generateOptionScreens();
 	}
 }
@@ -163,7 +167,7 @@ void OptionsScreen::generateOptionScreens() {
 			.addOptionItem(&Options::Option::ANAGLYPH, minecraft)
 			.addOptionItem(&Options::Option::RENDER_DEBUG, minecraft)
 			.addOptionItem(&Options::Option::LIMIT_FRAMERATE, minecraft)
-            .addOptionItem(&Options::Option::GUI_SCALE, minecraft);
+			.addOptionItem(&Options::Option::GUI_SCALE, minecraft);
 	} else if (currentPage == 1) {
 		optionPane->createOptionsGroup("options.group.game")
 			.addOptionItem(&Options::Option::DIFFICULTY, minecraft)
@@ -181,8 +185,8 @@ void OptionsScreen::generateOptionScreens() {
 
 		optionPane->createOptionsGroup("options.group.audio")
 			.addOptionItem(&Options::Option::SOUND, minecraft);
-#ifndef __VITA__
-			.addOptionTextEntry(minecraft->options.username, 100, minecraft, &btnUsername);
+#ifdef EDIT_USERNAME
+			.addOptionTextEntry(minecraft->options.username, 100, minecraft, &editUsername);
 #endif
 	}
 	
@@ -195,11 +199,7 @@ void OptionsScreen::mouseClicked( int x, int y, int buttonNum ) {
 	if(optionPane != NULL)
 		optionPane->mouseClicked(minecraft, x, y, buttonNum);
 	super::mouseClicked(x, y, buttonNum);
-	
-	if (buttonNum == MouseAction::ACTION_LEFT && btnUsername && btnUsername->clicked(minecraft, x, y)) {
-		buttonClicked(btnUsername);
 	}
-}
 
 void OptionsScreen::mouseReleased( int x, int y, int buttonNum ) {
 	if(optionPane != NULL)
@@ -208,23 +208,10 @@ void OptionsScreen::mouseReleased( int x, int y, int buttonNum ) {
 }
 
 void OptionsScreen::tick() {
-#ifndef __VITA__
-	if (isEditingUsername) {
-		int status = minecraft->platform()->getUserInputStatus();
-		if (status > -1) {
-			if (status == 1) {
-				StringVector v = minecraft->platform()->getUserInput();
-				if (!v.empty()) {
-					if (v[0].length() > 0) {
-						minecraft->options.username = v[0];
-						if (btnUsername) btnUsername->msg = v[0];
-						minecraft->options.save();
-					}
-				}
-			}
-			isEditingUsername = false;
-		}
-	} else
+#ifdef EDIT_USERNAME
+	if(editUsername != nullptr && editUsername->focused) {
+		minecraft->options.username = editUsername->text;
+	}
 #endif
 	{
 		if(optionPane != NULL)

@@ -288,7 +288,9 @@ void Options::load() {
 
 void Options::save() {
 	StringVector stringVec;
+#ifdef EDIT_USERNAME
 	addOptionToSaveOutput(stringVec, OptionStrings::Multiplayer_Username, username);
+#endif
 	addOptionToSaveOutput(stringVec, OptionStrings::Multiplayer_ServerVisible, serverVisible);
 
 	addOptionToSaveOutput(stringVec, OptionStrings::Controls_InvertMouse, invertYMouse);

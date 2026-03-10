@@ -9,6 +9,7 @@
 #include <psp2/io/stat.h>
 #include <psp2/appmgr.h>
 #include <psp2/libime.h>
+#include <psp2/registrymgr.h>
 
 #include <cstdlib>
 
@@ -162,8 +163,21 @@ public:
 
 	std::string defaultUsername() override {
 		SceNpId npid;
-		if(sceNpManagerGetNpId(&npid) >= 0) {
+		int ret = sceNpManagerGetNpId(&npid);
+
+		if(ret >= 0) {
 			return std::string(npid.handle.data);
+		}
+		else {
+			LOGI("Failed to read npid: %x", ret);
+
+			// read from registry as a fallback
+			char rd_username[0x100] = {0};
+			ret = sceRegMgrGetKeyStr("/CONFIG/SYSTEM", "username", rd_username, sizeof(rd_username));
+			if(ret >= 0) {
+				return std::string(rd_username);
+			}
+
 		}
 
 		return "Vita";
