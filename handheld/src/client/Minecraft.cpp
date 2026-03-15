@@ -744,7 +744,6 @@ void Minecraft::tickInput() {
 			// make controls nicer - Li
 
 			#if defined(__VITA__) || defined(_WIN32)
-				if(true) { //TODO: only do this if the world is loaded ..
 
 					if (key == Keyboard::KEY_E) {
 						// open inventory
@@ -778,7 +777,6 @@ void Minecraft::tickInput() {
 					if (key == Keyboard::KEY_F5) {
 						options.thirdPersonView = !options.thirdPersonView;
 					}
-				}
 
 			#endif
 

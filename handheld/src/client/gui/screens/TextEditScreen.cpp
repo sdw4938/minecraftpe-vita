@@ -141,14 +141,14 @@ void TextEditScreen::keyPressed( int eventKey ) {
 #ifdef __VITA__
 	// this is really cursed i dont like this lol -- but it does work
 
-	else if(eventKey == Keyboard::KEY_UP) { // mapped to dpad up
+	else if(eventKey == Keyboard::KEY_F5) { // mapped to dpad up
 		line--;
 		if(line < 0)
 			line = 3;
 		if(line >= 4)
 			line = 0;
 	}
-	else if(eventKey == Keyboard::KEY_DOWN) { // mapped to dpad down
+	else if(eventKey == Keyboard::KEY_LSHIFT) { // mapped to dpad down
 		line++;
 		if(line < 0)
 			line = 3;
