@@ -263,12 +263,12 @@ void handleController() {
 
 	// sneak
 	if(changedButtons & SCE_CTRL_DOWN) {
-		Keyboard::feed(Keyboard::KEY_LSHIFT, BTN_STATE(ctrl.buttons, SCE_CTRL_DOWN));
+		Keyboard::feed(Keyboard::KEY_DOWN, BTN_STATE(ctrl.buttons, SCE_CTRL_DOWN));
 	}
 
 	// f5 (very good idea key)
 	if(changedButtons & SCE_CTRL_UP) {
-		Keyboard::feed(Keyboard::KEY_F5, BTN_STATE(ctrl.buttons, SCE_CTRL_UP));
+		Keyboard::feed(Keyboard::KEY_UP, BTN_STATE(ctrl.buttons, SCE_CTRL_UP));
 	}
 
 	// change selected slot

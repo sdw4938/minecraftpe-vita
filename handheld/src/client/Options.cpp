@@ -69,15 +69,19 @@ void Options::initDefaultValues() {
 	keyMenuOk       = KeyMapping("key.menu.ok",       Keyboard::KEY_RETURN);
 	keyMenuCancel   = KeyMapping("key.menu.cancel",   Keyboard::KEY_BACKSPACE);
 	#ifdef __VITA__
-	keyMenuNext     = KeyMapping("key.menu.next",     Keyboard::KEY_LSHIFT);
-	keyMenuPrevious = KeyMapping("key.menu.previous", Keyboard::KEY_F5);
+	// set vita keymap,
+	keyMenuNext     = KeyMapping("key.menu.next",     Keyboard::KEY_DOWN);
+	keyMenuPrevious = KeyMapping("key.menu.previous", Keyboard::KEY_UP);
 	keyMenuOk       = KeyMapping("key.menu.ok",       Keyboard::KEY_SPACE);
 	keyMenuCancel   = KeyMapping("key.menu.cancel",   Keyboard::KEY_ESCAPE);
 
+	keySneak        = KeyMapping("key.sneak", Keyboard::KEY_DOWN);
+	keyJump         = KeyMapping("key.jump", Keyboard::KEY_SPACE);
 
-	keyCraft   = KeyMapping("key.crafting", Keyboard::KEY_C);
-	keyUse     = KeyMapping("key.use", Keyboard::KEY_X);
-	keyDestroy = KeyMapping("key.destroy", Keyboard::KEY_Z);
+	keyBuild        = KeyMapping("key.inventory", Keyboard::KEY_E);
+	keyCraft        = KeyMapping("key.crafting", Keyboard::KEY_C);
+	keyUse          = KeyMapping("key.use", Keyboard::KEY_X);
+	keyDestroy      = KeyMapping("key.destroy", Keyboard::KEY_Z);
 	#endif
 
 	int k = 0;

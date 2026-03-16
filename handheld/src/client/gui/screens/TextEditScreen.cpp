@@ -138,24 +138,23 @@ void TextEditScreen::keyPressed( int eventKey ) {
 	} else if(eventKey == Keyboard::KEY_RETURN)  {
 		line = (line + 1) % 4;
 	}
-#ifdef __VITA__
-	// this is really cursed i dont like this lol -- but it does work
 
-	else if(eventKey == Keyboard::KEY_F5) { // mapped to dpad up
+#if defined(__VITA__)
+	else if(eventKey == minecraft->options.keyMenuPrevious.key) { // mapped to dpad up
 		line--;
 		if(line < 0)
 			line = 3;
 		if(line >= 4)
 			line = 0;
 	}
-	else if(eventKey == Keyboard::KEY_LSHIFT) { // mapped to dpad down
+	else if(eventKey == minecraft->options.keyMenuNext.key) { // mapped to dpad down
 		line++;
 		if(line < 0)
 			line = 3;
 		if(line >= 4 )
 			line = 0;
 	}
-	else if(eventKey == Keyboard::KEY_SPACE) { // mapped to cross
+	else if(eventKey == minecraft->options.keyMenuOk.key) { // mapped to cross
 		minecraft->platform()->showKeyboard(sign->messages[line], 15);
 	}
 #endif
