@@ -210,7 +210,7 @@ void Options::set(const Options::Option* item, float value) {
 		pixelsPerMillimeter = value;
 	}
 	notifyOptionUpdate(item, value);
-	save();
+	// save();
 }
 
 void Options::set(const Options::Option* item, int value) {
@@ -220,7 +220,7 @@ void Options::set(const Options::Option* item, int value) {
 		guiScale = value;
 	}
 	notifyOptionUpdate(item, value);
-	save();
+	// save();
 }
 
 
