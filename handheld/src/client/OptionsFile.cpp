@@ -22,6 +22,8 @@ OptionsFile::OptionsFile() {
 	settingsPath = "/sdcard/games/com.mojang/minecraftpe/options.txt";
 #elif defined(__VITA__)
 	settingsPath = "ux0:/data/minecraftpe/games/com.mojang/minecraftpe/options.txt";
+#elif defined(__EPOC32__)
+	settingsPath = "/data/Others/minecraftpe/games/com.mojang/minecraftpe/options.txt";
 #else
 	settingsPath = "options.txt";
 #endif

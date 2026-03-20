@@ -1137,6 +1137,19 @@ bool Minecraft::isOnline()
 	return netCallback != NULL;
 }
 
+#if defined(__EPOC32__) && !defined(NO_NETWORK)
+bool Minecraft::needsClaimNetIf() {
+	if (isLookingForMultiplayer
+			|| isOnlineClient()
+			|| (level && level->players.size() > 1)) {
+		return true;
+	}
+	auto serv = dynamic_cast<ServerSideNetworkHandler *>(netCallback);
+	if (serv) { return serv->allowsIncomingConnections(); }
+	return false;
+}
+#endif
+
 void Minecraft::pauseGame(bool isBackPaused) {
 #ifndef STANDALONE_SERVER
 	if (screen != NULL) return;
@@ -1473,7 +1486,7 @@ void Minecraft::_levelGenerated()
 		netCallback->levelGenerated(level);
 	}
 
-#if defined(WIN32) || defined(RPI) || defined(__VITA__)
+#if defined(WIN32) || defined(RPI) || defined(__VITA__) || defined(__EPOC32__)
 	if (_commandServer) {
 		delete _commandServer;
 	}

@@ -12,6 +12,8 @@
 #if defined(__VITA__)
 #include <psp2/kernel/threadmgr.h>
 
+#include <cstddef>
+
 static int vita_thread_entry(size_t argc, void* argv) {
 	void** args = (void**)argv;
 	((void(*)(void*))args[0])(args[1]);
