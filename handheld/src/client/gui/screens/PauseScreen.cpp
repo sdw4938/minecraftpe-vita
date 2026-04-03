@@ -132,14 +132,14 @@ void PauseScreen::tick() {
 void PauseScreen::render(int xm, int ym, float a) {
 	renderBackground();
 
-	//bool isSaving = !minecraft->level.pauseSave(saveStep++);
-	//if (isSaving || visibleTime < 20) {
-	//	float col = ((visibleTime % 10) + a) / 10.0f;
-	//	col = Mth::sin(col * Mth::PI * 2) * 0.2f + 0.8f;
-	//	int br = (int) (255 * col);
+	bool isSaving = !minecraft->level.pauseSave(saveStep++);
+	if (isSaving || visibleTime < 20) {
+		float col = ((visibleTime % 10) + a) / 10.0f;
+		col = Mth::sin(col * Mth::PI * 2) * 0.2f + 0.8f;
+		int br = (int) (255 * col);
 
-	//	drawString(font, "Saving level..", 8, height - 16, br << 16 | br << 8 | br);
-	//}
+		drawString(font, "Saving level..", 8, height - 16, br << 16 | br << 8 | br);
+	}
 
 	drawCenteredString(font, "Game menu", width / 2, 24, 0xffffff);
 
