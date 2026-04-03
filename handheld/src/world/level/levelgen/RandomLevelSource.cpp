@@ -13,6 +13,7 @@
 #include "../../../util/Random.h"
 #include "feature/LakeFeature.h"
 #include "feature/TallgrassFeature.h"
+#include "LargeCaveFeature.h"
 
 const float RandomLevelSource::SNOW_CUTOFF = 0.5f;
 const float RandomLevelSource::SNOW_SCALE = 0.3f;
@@ -506,7 +507,7 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
     prepareHeights(xOffs, zOffs, blocks, 0, temperatures);//biomes, temperatures);
     buildSurfaces(xOffs, zOffs, blocks, biomes);
 
-	//caveFeature.apply(this, level, xOffs, zOffs, blocks, LevelChunk::ChunkBlockCount);
+	caveFeature.apply(this, level, xOffs, zOffs, blocks, LevelChunk::ChunkBlockCount);
     levelChunk->recalcHeightmap();
 
     return levelChunk;
@@ -718,7 +719,7 @@ LevelChunk* PerformanceTestChunkSource::create(int x, int z)
 
 	LevelChunk* levelChunk = new LevelChunk(level, blocks, x, z);
 
-	//caveFeature.apply(this, level, xOffs, zOffs, blocks, LevelChunk::ChunkBlockCount);
+	caveFeature.apply(this, level, xOffs, zOffs, blocks, LevelChunk::ChunkBlockCount);
 	levelChunk->recalcHeightmap();
 
 	return levelChunk;
