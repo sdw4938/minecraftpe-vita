@@ -11,6 +11,7 @@
 #include "../tile/Tile.h"
 #include "../tile/HeavyTile.h"
 #include "../../../util/Random.h"
+#include "../feature/LakeFeature.h"
 
 const float RandomLevelSource::SNOW_CUTOFF = 0.5f;
 const float RandomLevelSource::SNOW_SCALE = 0.3f;
@@ -233,25 +234,25 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     random.setSeed(((xt * xScale) + (zt * zScale)) ^ level->getSeed());
 
 	// //@todo: hide those chunks if they are aren't visible
-//    if (random.nextInt(4) == 0) {
-//        int x = xo + random.nextInt(16) + 8;
-//        int y = random.nextInt(128);
-//        int z = zo + random.nextInt(16) + 8;
-//        LakeFeature feature(Tile::calmWater->id);
-//		feature.place(level, &random, x, y, z);
-//        LOGI("Adding underground lake @ (%d,%d,%d)\n", x, y, z);
-//    }
+    if (random.nextInt(4) == 0) {
+        int x = xo + random.nextInt(16) + 8;
+        int y = random.nextInt(128);
+        int z = zo + random.nextInt(16) + 8;
+        LakeFeature feature(Tile::calmWater->id);
+		feature.place(level, &random, x, y, z);
+        LOGI("Adding underground lake @ (%d,%d,%d)\n", x, y, z);
+    }
 
-	////@todo: hide those chunks if they are aren't visible
- //   if (random.nextInt(8) == 0) {
- //       int x = xo + random.nextInt(16) + 8;
- //       int y = random.nextInt(random.nextInt(120) + 8);
- //       int z = zo + random.nextInt(16) + 8;
- //       if (y < 64 || random.nextInt(10) == 0) {
-	//		LakeFeature feature(Tile::calmLava->id);
-	//		feature.place(level, &random, x, y, z);
-	//	}
- //   }
+	// // @todo: hide those chunks if they are aren't visible
+    if (random.nextInt(8) == 0) {
+        int x = xo + random.nextInt(16) + 8;
+        int y = random.nextInt(random.nextInt(120) + 8);
+        int z = zo + random.nextInt(16) + 8;
+        if (y < 64 || random.nextInt(10) == 0) {
+			LakeFeature feature(Tile::calmLava->id);
+			feature.place(level, &random, x, y, z);
+		}
+    }
 
 	static float totalTime = 0;
 	const float st = getTimeS();
