@@ -11,7 +11,7 @@
 #include "../tile/Tile.h"
 #include "../tile/HeavyTile.h"
 #include "../../../util/Random.h"
-#include "../feature/LakeFeature.h"
+#include "feature/LakeFeature.h"
 
 const float RandomLevelSource::SNOW_CUTOFF = 0.5f;
 const float RandomLevelSource::SNOW_SCALE = 0.3f;
