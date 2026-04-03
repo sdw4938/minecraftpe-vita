@@ -12,6 +12,7 @@
 #include "../tile/HeavyTile.h"
 #include "../../../util/Random.h"
 #include "feature/LakeFeature.h"
+#include "feature/TallgrassFeature.h"
 
 const float RandomLevelSource::SNOW_CUTOFF = 0.5f;
 const float RandomLevelSource::SNOW_SCALE = 0.3f;
@@ -398,7 +399,7 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
         FlowerFeature feature(Tile::mushroom2->id);
 		feature.place(level, &random, x, y, z);
     }
-	/*int grassCount = 1;
+	int grassCount = 1;
 	for (int i = 0; i < grassCount; i++) {
 		int x = xo + random.nextInt(16) + 8;
 		int y = random.nextInt(Level::genDepth);
@@ -408,7 +409,7 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
 			grassFeature->place(level, &random, x, y, z);
 			delete grassFeature;
 		}
-	}*/
+	}
     for (int i = 0; i < 10; i++) {
         int x = xo + random.nextInt(16) + 8;
         int y = random.nextInt(128);
